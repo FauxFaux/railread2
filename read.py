@@ -1,7 +1,10 @@
 #!/usr/bin/env python
+import datetime
 import fileinput
 import json
 import traceback
+
+now = datetime.date.today().isoformat()
 
 try:
 	for line in fileinput.input():
@@ -9,6 +12,14 @@ try:
 		try:
 			sched = doc['JsonScheduleV1']
 		except KeyError:
+			# it's not a schedule line, normal
+			continue
+
+		if sched['CIF_stp_indicator'] != 'P':
+			# P is for pants, also permanant
+			continue
+
+		if sched['schedule_start_date'] > now or sched['schedule_end_date'] < now:
 			continue
 
 		seg = sched['schedule_segment']
