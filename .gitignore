@@ -1,3 +1,5 @@
 full.json
 *.swp
 *.lst
+*.gz
+*.bz2
